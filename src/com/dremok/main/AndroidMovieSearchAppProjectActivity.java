@@ -3,6 +3,7 @@ package com.dremok.main;
 import java.util.ArrayList;
 
 import com.dremok.R;
+import com.dremok.model.Movie;
 import com.dremok.model.Person;
 import com.dremok.services.HttpRetriever;
 import com.dremok.services.XmlParser;
@@ -52,10 +53,12 @@ public class AndroidMovieSearchAppProjectActivity extends Activity {
             public void onClick(View v) {
                 String query = searchEditText.getText().toString();
                 if (moviesSearchRadioButton.isChecked()) {
-                	longToast(moviesSearchRadioButton.getText() + " " + query);
+                	String xml = retriever.retrieve("http://api.themoviedb.org/2.1/Movie.search/en/xml/c9b207380c2ac6de634dc6d6cc6c7403/" + query.toUpperCase().replace(' ', '+'));
+                    ArrayList<Movie> movieList = parser.parseMoviesResponse(xml);
+                	longToast(movieList.get(0).overview);
                 }
                 else if (peopleSearchRadioButton.isChecked()) {
-                    String xml = retriever.retrieve("http://api.themoviedb.org/2.1/Person.search/en/xml/c9b207380c2ac6de634dc6d6cc6c7403/" + searchEditText.getText().toString().toUpperCase().replace(' ', '+'));
+                    String xml = retriever.retrieve("http://api.themoviedb.org/2.1/Person.search/en/xml/c9b207380c2ac6de634dc6d6cc6c7403/" + query.toUpperCase().replace(' ', '+'));
                     ArrayList<Person> personList = parser.parsePeopleResponse(xml);
                 	longToast(personList.get(0).biography);
                 }

@@ -1,6 +1,5 @@
 package com.dremok.services;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 
@@ -12,7 +11,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import com.dremok.handlers.MovieHandler;
 import com.dremok.handlers.PersonHandler;
+import com.dremok.model.Movie;
 import com.dremok.model.Person;
 
 public class XmlParser {
@@ -31,6 +32,20 @@ public class XmlParser {
 			xmlReader.setContentHandler(personHandler);
 			xmlReader.parse(new InputSource(new StringReader(xml)));
 			return personHandler.retrievePersonList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public ArrayList<Movie> parseMoviesResponse(String xml) {
+		try {
+			XMLReader xmlReader = initializeReader();
+			MovieHandler movieHandler = new MovieHandler();
+			xmlReader.setContentHandler(movieHandler);
+			xmlReader.parse(new InputSource(new StringReader(xml)));
+			return movieHandler.retrievePersonList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
